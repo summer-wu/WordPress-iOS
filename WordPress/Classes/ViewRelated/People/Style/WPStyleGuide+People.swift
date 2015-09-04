@@ -13,11 +13,13 @@ extension WPStyleGuide {
 
             // MARK: Colors
             public static let textColor = UIColor.whiteColor()
-            public static let superAdminColor = WPStyleGuide.fireOrange()
-            public static let adminColor = WPStyleGuide.darkGrey()
-            public static let editorColor = WPStyleGuide.darkBlue()
-            public static let authorColor = WPStyleGuide.wordPressBlue()
-            public static let contributorColor = WPStyleGuide.wordPressBlue()
         }
+
+        // MARK: Colors
+        public static let superAdminColor = WPStyleGuide.fireOrange()
+        public static let adminColor = WPStyleGuide.darkGrey()
+        public static let editorColor = WPStyleGuide.darkBlue()
+        public static let authorColor = WPStyleGuide.wordPressBlue()
+        public static let contributorColor = WPStyleGuide.wordPressBlue()
     }
 }

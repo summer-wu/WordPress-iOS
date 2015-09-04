@@ -18,16 +18,12 @@ extension PeopleViewController: UITableViewDataSource {
         case 0:
             cell.displayNameLabel.text = "Kevin Conboy"
             cell.usernameLabel.text = "@alternatekev"
-            cell.roleBadge.role = .Editor
         case 1:
             cell.displayNameLabel.text = "Mel Choyce"
             cell.usernameLabel.text = "@melchoyce"
-            cell.roleBadge.role = .Author
-            cell.roleBadge.pending = true
         case 2:
             cell.displayNameLabel.text = "Kelly Dwan"
             cell.usernameLabel.text = "@ryelle"
-            cell.roleBadge.role = .Contributor
         default:
             break
         }

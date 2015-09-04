@@ -1,0 +1,69 @@
+import Foundation
+
+struct PeopleRemote {
+    let api: WordPressComApi
+
+    func getTeam(siteID: Int, search: String?) -> RACSignal {
+        let signal = RACSignal.createSignal {
+            subscriber in
+
+            let path = "v1.1/sites/\(siteID)/users"
+            let parameters = search.map { ["search": $0] }
+
+            let operation = self.api.GET(path, parameters: parameters, success: {
+                _, users in
+                let mappedUsers = self.myCrappyUsersMapperThatShallBeReplaced(users, siteID)
+                subscriber.sendNext(mappedUsers as! AnyObject)
+                subscriber.sendCompleted()
+            }, failure: {
+                _, error in
+                subscriber.sendError(error)
+            })
+
+            return RACDisposable {
+                operation.cancel()
+            }
+        }
+
+        return signal.map {
+            users in
+            return users
+        }
+    }
+
+    private func myCrappyUsersMapperThatShallBeReplaced(json: AnyObject, _ siteID: Int) -> People {
+        let users = json as! Array<Dictionary<String, AnyObject>>
+        let people = users.map {
+            user -> Person in
+
+            let id = user["ID"] as! Int
+            let login = user["login"] as! String
+            let name = user["name"] as! String
+            let firstName = user["first_name"] as! String
+            let lastName = user["last_name"] as! String
+            let roles = user["roles"] as! [String]
+            let avatarUrl = user["avatar_URL"] as! String
+
+            let avatarURL: NSURL = NSURL(string: avatarUrl)!
+
+            return Person(
+                ID: id,
+                username: login,
+                firstName: firstName,
+                lastName: lastName,
+                displayName: name,
+                role: .Author,
+                pending: false,
+                siteID: siteID,
+                avatarURL:avatarURL
+            )
+        }
+
+        return people
+    }
+
+    enum PeopleResult {
+        case Result(People)
+        case Error(NSError)
+    }
+}

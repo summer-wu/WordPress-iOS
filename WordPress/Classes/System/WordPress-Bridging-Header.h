@@ -4,6 +4,7 @@
 #import <DTCoreText/DTCoreText.h>
 #import <SFHFKeychainUtils.h>
 #import <WordPress-AppbotX/ABXAppStore.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 #import "Constants.h"
 #import "DDLogSwift.h"

@@ -37,117 +37,24 @@ class PeopleRoleBadgeView: UILabel {
         return paddedSize
     }
 
-    // MARK: Private methods
+    //  MARK: Computed Properties
 
-    private func updateText() {
-        let roleText = role.localizedName()
-        if pending {
-            text = String(format: NSLocalizedString("%@ - pending", comment: "User role indicator, when there's a pending invite. Placeholder is role (e.g. Admin, Editor,...)"), roleText)
-        } else {
-            text = roleText
-        }
-    }
-
-    private func updateColor() {
-        let baseColor = role.color()
-        let alternateColor = WPStyleGuide.People.RoleBadge.textColor
-
-        layer.borderColor = baseColor.CGColor
-
-        if pending {
-            textColor = baseColor
-            backgroundColor = alternateColor
-        } else {
-            textColor = alternateColor
-            backgroundColor = baseColor
-        }
-    }
-
-    private func updateView() {
-        updateColor()
-        updateText()
-    }
-
-    // MARK: Inspectable properties
-
-    @IBInspectable var pending: Bool = false {
-        didSet {
-            updateView()
-        }
-    }
-
-    // MARK: Public properties
-
-    /**
-    Sets the role from Interface Builder
-
-    Since IB doesn't support inspectable enum values, we map an integer to `role`.
-    Code should use `role` instead.
-    */
-    @IBInspectable var roleValue: Int {
+    var borderColor: UIColor {
         get {
-            return role.rawValue
+            return UIColor(CGColor: layer.borderColor)!
         }
+
         set {
-            role = Role(rawValue: newValue) ?? .Admin
+            layer.borderColor = newValue.CGColor
         }
     }
 
-    // MARK: Properties
-    var role: Role = .Admin {
-        didSet {
-            updateView()
-        }
+    // MARK: Interface Builder additions
+    override func prepareForInterfaceBuilder() {
+        text = "Editor - Pending"
+        textColor = WPStyleGuide.People.editorColor
+        borderColor = WPStyleGuide.People.editorColor
+        backgroundColor = WPStyleGuide.People.RoleBadge.textColor
     }
 
-    /* If we don't override this, when the view is highlighted (e.g. tapping on
-    a PeopleCell), it will lose its background color and look weird */
-    override var highlighted: Bool {
-        get {
-            return super.highlighted
-        }
-        set {
-            super.highlighted = newValue
-            updateView()
-        }
-    }
-
-    // MARK: Custom Types
-    enum Role: Int {
-        case SuperAdmin = 0
-        case Admin = 1
-        case Editor = 2
-        case Author = 3
-        case Contributor = 4
-
-        func color() -> UIColor {
-            switch self {
-            case .SuperAdmin:
-                return WPStyleGuide.People.RoleBadge.superAdminColor
-            case .Admin:
-                return WPStyleGuide.People.RoleBadge.adminColor
-            case .Editor:
-                return WPStyleGuide.People.RoleBadge.editorColor
-            case .Author:
-                return WPStyleGuide.People.RoleBadge.authorColor
-            case .Contributor:
-                return WPStyleGuide.People.RoleBadge.contributorColor
-            }
-        }
-
-        func localizedName() -> String {
-            switch self {
-            case .SuperAdmin:
-                return NSLocalizedString("Super Admin", comment: "User role badge")
-            case .Admin:
-                return NSLocalizedString("Admin", comment: "User role badge")
-            case .Editor:
-                return NSLocalizedString("Editor", comment: "User role badge")
-            case .Author:
-                return NSLocalizedString("Author", comment: "User role badge")
-            case .Contributor:
-                return NSLocalizedString("Contributor", comment: "User role badge")
-            }
-        }
-    }
 }
