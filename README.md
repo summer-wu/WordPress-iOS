@@ -1,3 +1,7 @@
+#学习
+官方版本不带pods文件夹，cocoapod必须使用3.7.2版本。添加了Gemfile使用bundler限制cocoapod版本。
+没有人提供.wpcom_app_credentials，我提供了一个，需要将它先拷贝到~下然后再build。
+
 WordPress for iOS
 
 [![Build Status](https://travis-ci.org/wordpress-mobile/WordPress-iOS.png)](https://travis-ci.org/wordpress-mobile/WordPress-iOS)
